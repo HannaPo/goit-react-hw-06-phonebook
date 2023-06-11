@@ -11,6 +11,10 @@ const ContactList = () => {
 
   const filteredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
 
+//   const filteredContacts = contacts.filter(contact =>
+//   contact.name?.toLowerCase().includes(filter?.toLowerCase())
+// );
+  
   return (
     <Wrapper>
       {filteredContacts.map(({ id, name, number }) => (
