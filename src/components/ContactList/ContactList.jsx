@@ -1,17 +1,25 @@
-import PropTypes from 'prop-types';
-import { ReactComponent as DeleteIcon } from '../../icons/cross.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts, getFilter } from 'redux/selectors';
+import { deleteContact } from 'redux/contactsSlice';
 import { Wrapper, Item, Button } from './ContactList.styled';
+import { ReactComponent as DeleteIcon } from '../../icons/cross.svg';
 
-const ContactList = ({ contacts, onDeleteContact }) => {
+const ContactList = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+
+  const filteredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
+
   return (
     <Wrapper>
-      {contacts.map(({ id, name, number }) => (
+      {filteredContacts.map(({ id, name, number }) => (
         <Item key={id}>
           {name}: {number}
           <Button
             type="button"
             aria-label="Delete contact"
-            onClick={() => onDeleteContact(id)}
+            onClick={() => dispatch(deleteContact(id))}
           >
             <DeleteIcon />
           </Button>
@@ -19,16 +27,6 @@ const ContactList = ({ contacts, onDeleteContact }) => {
       ))}
     </Wrapper>
   );
-};
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired
-    })
-  ).isRequired
 };
 
 export default ContactList;
