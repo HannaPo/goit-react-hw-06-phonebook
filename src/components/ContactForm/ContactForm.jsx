@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts } from 'redux/selectors';
 import { addContact } from 'redux/contactsSlice';
+import { nanoid } from '@reduxjs/toolkit';
 import { Form, Label, Input, Button } from './ContactForm.styled';
 
 const ContactForm = () => {
@@ -25,11 +26,9 @@ const ContactForm = () => {
       return;
     }
 
-    if (name && number) {
-      dispatch(addContact(name, number));
-      setName('');
-      setNumber('');
-    }
+    dispatch(addContact({ id: nanoid(), name, number }));
+    setName('');
+    setNumber('');
   };
 
   const handleChange = event => {
